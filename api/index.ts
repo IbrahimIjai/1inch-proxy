@@ -13,7 +13,7 @@ const headers = {
   Authorization: `Bearer ${process.env.ONE_INCH_API_KEY}`,
   "Content-Type": "application/json",
 };
-const port = 2000;
+const port = 3000;
 
 app.use(express.json());
 
@@ -23,6 +23,7 @@ app.get("/", async (req, res) => {
 app.get("/swap", async (req, res) => {
   try {
     const { chainId, ...swapParams } = req.query;
+    console.log("req.body", )
     console.log("request query", req.query);
     const url = `${ONE_INCH_SWAP_URI}${chainId}/swap`;
 
