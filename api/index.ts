@@ -24,7 +24,7 @@ app.get("/swap", async (req, res) => {
   try {
     const { chainId, ...swapParams } = req.query;
     const url = `${ONE_INCH_SWAP_URI}${chainId}/swap`;
-
+    console.log(ONE_INCH_SWAP_URI, "Autorization", headers.Authorization);
     const config = {
       method: "get",
       url,
