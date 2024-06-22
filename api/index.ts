@@ -18,7 +18,7 @@ const port = 2000;
 app.use(express.json());
 
 app.get("/", async (req, res) => {
-  res.json({ status: 200 });
+  return res.json({ status: 200 });
 });
 app.get("/swap", async (req, res) => {
   try {
@@ -32,7 +32,9 @@ app.get("/swap", async (req, res) => {
       params: swapParams,
     };
 
+    console.log(url, config);
     const response = await axios(config);
+    console.log(response);
     res.json(response.data);
   } catch (error) {
     console.error(
