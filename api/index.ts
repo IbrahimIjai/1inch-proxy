@@ -1,4 +1,4 @@
-const { ONE_INCH_SWAP_URI } = require("../utils/index.ts");
+const { ONE_INCH_SWAP_URI } = require("../utils");
 
 require("dotenv").config();
 
