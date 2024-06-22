@@ -18,14 +18,14 @@ const port = 2000;
 app.use(express.json());
 
 app.get("/", async (req, res) => {
-  return res.json({ status: 200 });
+  res.json({ status: 200 });
 });
 app.get("/swap", async (req, res) => {
   try {
     const { chainId, ...swapParams } = req.query;
     console.log("request query", req.query);
     const url = `${ONE_INCH_SWAP_URI}${chainId}/swap`;
-    
+
     console.log(ONE_INCH_SWAP_URI, "Autorization", headers.Authorization);
     const config = {
       method: "get",
