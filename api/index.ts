@@ -1,6 +1,6 @@
 const { APPROVAL_V3 } = require("../utils");
 
-const { ONE_INCH_SWAP_URI } = require("../utils");
+const { ONE_INCH_SWAP_URI, BALANCE_URI } = require("../utils");
 
 require("dotenv").config();
 
@@ -108,6 +108,27 @@ app.get("/quote", async (req, res) => {
   }
 });
 
+app.get("/allowancesAndBalances", async (req, res) => {
+  try {
+    const { chainId, spender, walletAddress } = req.query;
+    const url = `${BALANCE_URI}${chainId}/allowancesAndBalances/${spender}/${walletAddress}`;
+    const config = {
+      method: "get",
+      url,
+      headers,
+    };
+    const response = await axios(config);
+    res.json(response.data);
+  } catch (error) {
+    console.error(
+      "Error:",
+      error.response ? error.response.data : error.message,
+    );
+    res
+      .status(error.response ? error.response.status : 500)
+      .json(error.response ? error.response.data : { message: error.message });
+  }
+});
 
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
