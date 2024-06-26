@@ -1,3 +1,5 @@
+const { APPROVAL_V3 } = require("../utils");
+
 const { ONE_INCH_SWAP_URI } = require("../utils");
 
 require("dotenv").config();
@@ -78,6 +80,48 @@ app.get("/approval", async (req, res) => {
       .json(error.response ? error.response.data : { message: error.message });
   }
 });
+
+app.get("/swapv3", async (req, res) => {
+  try {
+    const {
+      chain_id,
+      fromTokenAddress,
+      toTokenAddress,
+      amount,
+      fromAddress,
+      slippage,
+      destReceiver,
+      disableEstimate,
+    } = req.query;
+    const url = `${APPROVAL_V3}${chain_id}/swap?fromTokenAddress=${fromTokenAddress}&toTokenAddress=${toTokenAddress}&amount=${amount}&fromAddress=${fromAddress}&slippage=${slippage}&destReceiver=${destReceiver}&disableEstimate=${true}`;
+    const config = {
+      method: "get",
+      url,
+      headers,
+      // params: {
+      //   chain_id,
+      //   fromTokenAddress,
+      //   toTokenAddress,
+      //   amount,
+      //   fromAddress,
+      //   slippage,
+      //   destReceiver,
+      //   disableEstimate,
+      // },
+    };
+    const response = await axios(config);
+    res.json(response.data);
+  } catch (error) {
+    console.error(
+      "Error:",
+      error.response ? error.response.data : error.message,
+    );
+    res
+      .status(error.response ? error.response.status : 500)
+      .json(error.response ? error.response.data : { message: error.message });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
