@@ -80,36 +80,21 @@ app.get("/approval", async (req, res) => {
       .json(error.response ? error.response.data : { message: error.message });
   }
 });
-
-app.get("/swapv3", async (req, res) => {
+app.get("/quote", async (req, res) => {
   try {
-    const {
-      chain_id,
-      fromTokenAddress,
-      toTokenAddress,
-      amount,
-      fromAddress,
-      slippage,
-      destReceiver,
-      disableEstimate,
-    } = req.query;
-    const url = `${APPROVAL_V3}${chain_id}/swap?fromTokenAddress=${fromTokenAddress}&toTokenAddress=${toTokenAddress}&amount=${amount}&fromAddress=${fromAddress}&slippage=${slippage}&destReceiver=${destReceiver}&disableEstimate=${true}`;
+    const { chainId, src, dst, amount } = req.query;
+    const url = `${ONE_INCH_SWAP_URI}${chainId}/quote`;
     const config = {
       method: "get",
       url,
       headers,
-      // params: {
-      //   chain_id,
-      //   fromTokenAddress,
-      //   toTokenAddress,
-      //   amount,
-      //   fromAddress,
-      //   slippage,
-      //   destReceiver,
-      //   disableEstimate,
-      // },
+      params: {
+        chainId,
+        src,
+        dst,
+        amount,
+      },
     };
-    console.log("params", req.query, url);
     const response = await axios(config);
     res.json(response.data);
   } catch (error) {
@@ -122,6 +107,7 @@ app.get("/swapv3", async (req, res) => {
       .json(error.response ? error.response.data : { message: error.message });
   }
 });
+
 
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
