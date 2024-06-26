@@ -109,6 +109,7 @@ app.get("/swapv3", async (req, res) => {
       //   disableEstimate,
       // },
     };
+    console.log("params", req.query, url);
     const response = await axios(config);
     res.json(response.data);
   } catch (error) {
