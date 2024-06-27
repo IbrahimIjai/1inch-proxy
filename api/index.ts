@@ -140,7 +140,7 @@ app.get("/covalentBalanceAPi", async (req, res) => {
         address,
       );
     // const response = await axios(config);
-    res.json(data);
+    res(data);
   } catch (error) {
     console.error(
       "Error:",
