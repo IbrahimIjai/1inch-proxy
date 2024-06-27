@@ -139,7 +139,8 @@ app.get("/covalentBalanceAPi", async (req, res) => {
         chainId,
         address,
       );
-    res.json(data);
+      console.log(data, req.query, req.params)
+    res.json(data.items);
   } catch (error) {
     console.error(
       "Error:",
