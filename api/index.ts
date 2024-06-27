@@ -1,9 +1,11 @@
+const { covalentClient } = require("../utils/covalent");
+
 const { APPROVAL_V3 } = require("../utils");
 
 const { ONE_INCH_SWAP_URI, BALANCE_URI } = require("../utils");
 
 require("dotenv").config();
-
+const { ChainID: CovalentChainID } = require("@covalenthq/client-sdk");
 const express = require("express");
 const app = express();
 const axios = require("axios");
@@ -119,6 +121,26 @@ app.get("/allowancesAndBalances", async (req, res) => {
     };
     const response = await axios(config);
     res.json(response.data);
+  } catch (error) {
+    console.error(
+      "Error:",
+      error.response ? error.response.data : error.message,
+    );
+    res
+      .status(error.response ? error.response.status : 500)
+      .json(error.response ? error.response.data : { message: error.message });
+  }
+});
+app.get("/covalentBalanceAPi", async (req, res) => {
+  const { chainId, address } = req.params;
+  try {
+    const { data } =
+      await covalentClient.BalanceService.getTokenBalancesForWalletAddress(
+        chainId,
+        address,
+      );
+    // const response = await axios(config);
+    res.json(data);
   } catch (error) {
     console.error(
       "Error:",
