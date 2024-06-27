@@ -136,10 +136,10 @@ app.get("/covalentBalanceAPi", async (req, res) => {
   try {
     const { data } =
       await covalentClient.BalanceService.getTokenBalancesForWalletAddress(
-        chainId,
+        "base-mainnet",
         address,
       );
-      console.log(data, req.query, req.params)
+    console.log(data, req.query, req.params);
     res.json(data.items);
   } catch (error) {
     console.error(
