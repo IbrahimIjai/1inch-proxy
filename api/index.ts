@@ -18,7 +18,7 @@ app.use(
     origin: "*",
     methods: ["GET"],
     allowedHeaders: ["", ""],
-  }),
+  })
 );
 
 const headers = {
@@ -49,7 +49,7 @@ app.get("/swap", async (req, res) => {
   } catch (error) {
     console.error(
       "Error:",
-      error.response ? error.response.data : error.message,
+      error.response ? error.response.data : error.message
     );
     res
       .status(error.response ? error.response.status : 500)
@@ -75,7 +75,7 @@ app.get("/approval", async (req, res) => {
   } catch (error) {
     console.error(
       "Error:",
-      error.response ? error.response.data : error.message,
+      error.response ? error.response.data : error.message
     );
     res
       .status(error.response ? error.response.status : 500)
@@ -102,7 +102,7 @@ app.get("/quote", async (req, res) => {
   } catch (error) {
     console.error(
       "Error:",
-      error.response ? error.response.data : error.message,
+      error.response ? error.response.data : error.message
     );
     res
       .status(error.response ? error.response.status : 500)
@@ -124,7 +124,7 @@ app.get("/allowancesAndBalances", async (req, res) => {
   } catch (error) {
     console.error(
       "Error:",
-      error.response ? error.response.data : error.message,
+      error.response ? error.response.data : error.message
     );
     res
       .status(error.response ? error.response.status : 500)
@@ -137,14 +137,41 @@ app.get("/covalentBalanceAPi", async (req, res) => {
     const { data } =
       await covalentClient.BalanceService.getTokenBalancesForWalletAddress(
         "base-mainnet",
-        address,
+        address
       );
     console.log(data, req.query, req.params);
     res.json(data);
   } catch (error) {
     console.error(
       "Error:",
-      error.response ? error.response.data : error.message,
+      error.response ? error.response.data : error.message
+    );
+    res
+      .status(error.response ? error.response.status : 500)
+      .json(error.response ? error.response.data : { message: error.message });
+  }
+});
+
+app.get("/eth_price", async (req, res) => {
+  try {
+    const url = `${ONE_INCH_SWAP_URI}8453/quote`;
+    const config = {
+      method: "get",
+      url,
+      headers,
+      params: {
+        src: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        dst: "0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb",
+        amount: "1000000000000000000",
+      },
+    };
+    const response = await axios(config);
+    const { dstAmount } = response.data;
+    res.json(dstAmount / 10 ** 18);
+  } catch (error) {
+    console.error(
+      "Error:",
+      error.response ? error.response.data : error.message
     );
     res
       .status(error.response ? error.response.status : 500)
